@@ -7,5 +7,5 @@ func panicHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func pingHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("pong"))
+	w.Write([]byte("{\"alive\": true}"))
 }
