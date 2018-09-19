@@ -15,7 +15,6 @@ func getRouter() *chi.Mux {
 
 	// HANDLERS
 	r.Get("/ping", pingHandler)
-	r.Get("/panic", panicHandler)
 
 	// REST
 	r.Route("/api", func(r chi.Router) {
