@@ -19,8 +19,13 @@ func TestRouter(t *testing.T) {
 	t.Run("Ping endpoint", func(t *testing.T) {
 		rec := performRequest(r, "GET", "/ping")
 		if rec.Code != http.StatusOK {
-			t.Errorf("handler returned wrong status code: got %v want %v",
+			t.Errorf("endpoint returned wrong status code: got %v want %v",
 				rec.Code, http.StatusOK)
+		}
+
+		if expected := ("{\"alive\": true}"); string(rec.Body.Bytes()[:]) != expected {
+			t.Errorf("endpoint returned wrong body: got %v want %v",
+				rec.Body, expected)
 		}
 	})
 
