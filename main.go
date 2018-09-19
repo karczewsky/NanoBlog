@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func init() {
@@ -12,5 +13,13 @@ func init() {
 func main() {
 	router := getRouter()
 
-	http.ListenAndServe(":8000", router)
+	s := &http.Server{
+		Addr:           ":8000",
+		Handler:        router,
+		ReadTimeout:    5 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	s.ListenAndServe()
 }
