@@ -42,10 +42,9 @@ func getSingleArticleHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type article struct {
-	ID     int
-	Title  string
-	Author string
-	Body   string
+	ID    int
+	Title string
+	Body  string
 }
 
 var (
