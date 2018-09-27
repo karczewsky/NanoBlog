@@ -27,10 +27,10 @@ func connectToDb() *sql.DB {
 
 func initDB() {
 	_, err := database.Query(`
-		CREATE TABLE IF NOT EXISTS articles
-		(id SERIAL PRIMARY KEY,
-		title text NOT NULL,
-		body text NOT NULL
+		CREATE TABLE IF NOT EXISTS articles(
+			id SERIAL PRIMARY KEY,
+			title text NOT NULL,
+			body text NOT NULL
 		)
 	`)
 
