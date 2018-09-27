@@ -22,11 +22,10 @@ func getRouter() *chi.Mux {
 	// REST
 	r.Route("/api", func(r chi.Router) {
 		r.Route("/articles", func(r chi.Router) {
-			// r.Post("/", addArticleHandler)
+			r.Post("/", createArticle)
 			r.Route("/{articleID}", func(r chi.Router) {
 				r.Use(articleCtxMiddleware)
 				r.Get("/", getSingleArticleHandler)
-				r.Post("/", makeArticle)
 			})
 		})
 	})

@@ -43,7 +43,7 @@ func getSingleArticleHandler(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, art)
 }
 
-func makeArticle(w http.ResponseWriter, r *http.Request) {
+func createArticle(w http.ResponseWriter, r *http.Request) {
 	data := &article{}
 
 	if err := render.Bind(r, data); err != nil {
