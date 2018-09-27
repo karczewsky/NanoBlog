@@ -4,32 +4,28 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func init() {
-	// godotenv.Load(".env")
-	// os.Getenv("Password")
-	articles = []article{
-		article{
-			ID:     1,
-			Title:  "New article",
-			Author: "Foo",
-			Body:   "Bar",
-		},
-		article{
-			ID:     2,
-			Title:  "Fresh article",
-			Author: "Foo",
-			Body:   "Bar",
-		},
+	// Load ENVs
+	err := godotenv.Load(".env")
+	if err != nil {
+		panic("Error loading .env file")
 	}
+
+	// DB
+	database = connectToDb()
+	initDB()
 
 	fmt.Printf("Starting NanoBlog\n")
 }
 
 func main() {
-	router := getRouter()
+	defer database.Close()
 
+	router := getRouter()
 	s := &http.Server{
 		Addr:           ":8000",
 		Handler:        router,
