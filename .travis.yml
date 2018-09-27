@@ -2,3 +2,7 @@ language: go
 
 go:
   - 1.11.x
+
+before_script:
+  - psql -c "CREATE DATABASE nanoblog;" -U postgres
+  - psql -c "CREATE USER user WITH PASSWORD 'secret';" -U postgres
