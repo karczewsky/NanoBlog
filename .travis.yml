@@ -5,4 +5,4 @@ go:
 
 before_script:
   - psql -c "CREATE DATABASE nanoblog;" -U postgres
-  - psql -c "CREATE USER user WITH PASSWORD 'secret';" -U postgres
+  - psql -c "CREATE USER foo WITH PASSWORD 'bar';" -U postgres
