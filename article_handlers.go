@@ -14,7 +14,7 @@ func articleCtxMiddleware(next http.Handler) http.Handler {
 		articleID, err := strconv.Atoi(chi.URLParam(r, "articleID"))
 
 		if err != nil {
-			render.Render(w, r, errNotFound)
+			render.Render(w, r, errBadRequest400)
 			return
 		}
 
@@ -25,7 +25,7 @@ func articleCtxMiddleware(next http.Handler) http.Handler {
 
 func getSingleArticleHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value(key("articleID"))
-	var art article
+	art := article{}
 	for _, a := range articles {
 		if a.ID == id {
 			art = a
@@ -34,7 +34,7 @@ func getSingleArticleHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if art == (article{}) {
-		render.Render(w, r, errNotFound)
+		render.Render(w, r, errBadRequest400)
 		return
 	}
 
@@ -49,19 +49,6 @@ type article struct {
 }
 
 var (
-	errNotFound = errResponse{HTTPStatusCode: http.StatusBadRequest}
-	articles    = []article{
-		article{
-			ID:     1,
-			Title:  "New article",
-			Author: "Foo",
-			Body:   "Bar",
-		},
-		article{
-			ID:     2,
-			Title:  "Fresh article",
-			Author: "Foo",
-			Body:   "Bar",
-		},
-	}
+	errBadRequest400 = &errResponse{HTTPStatusCode: http.StatusBadRequest, ErrorMessage: "Bad Request"}
+	articles         []article
 )

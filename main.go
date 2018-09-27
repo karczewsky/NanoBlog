@@ -7,6 +7,23 @@ import (
 )
 
 func init() {
+	// godotenv.Load(".env")
+	// os.Getenv("Password")
+	articles = []article{
+		article{
+			ID:     1,
+			Title:  "New article",
+			Author: "Foo",
+			Body:   "Bar",
+		},
+		article{
+			ID:     2,
+			Title:  "Fresh article",
+			Author: "Foo",
+			Body:   "Bar",
+		},
+	}
+
 	fmt.Printf("Starting NanoBlog\n")
 }
 

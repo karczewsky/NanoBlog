@@ -13,7 +13,6 @@ func getRouter() *chi.Mux {
 	r := chi.NewRouter()
 
 	// MIDDLEWARE
-	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
@@ -37,7 +36,8 @@ func getRouter() *chi.Mux {
 type key string
 
 type errResponse struct {
-	HTTPStatusCode int
+	HTTPStatusCode int    `json:"-"`
+	ErrorMessage   string `json:"message"`
 }
 
 func (e errResponse) Render(w http.ResponseWriter, r *http.Request) error {
