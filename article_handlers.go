@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"errors"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -41,13 +43,62 @@ func getSingleArticleHandler(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, art)
 }
 
+func makeArticle(w http.ResponseWriter, r *http.Request) {
+	data := &article{}
+
+	if err := render.Bind(r, data); err != nil {
+		render.Render(w, r, errBadRequest400)
+		return
+	}
+
+	if data.Title == "" || data.Body == "" {
+		render.Render(w, r, errBadRequest400)
+		return
+	}
+
+	if err := data.saveDB(); err != nil {
+		log.Fatal(err)
+		render.Render(w, r, errServerError500)
+		return
+	}
+
+	render.JSON(w, r, data)
+}
+
 type article struct {
-	ID    int
-	Title string
-	Body  string
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+	Body  string `json:"body"`
+}
+
+func (a *article) Bind(r *http.Request) error {
+	if a == nil {
+		return errors.New("article data was not provided")
+	}
+
+	a.ID = 0
+	return nil
+}
+
+func (a *article) saveDB() error {
+	row := database.QueryRow("INSERT INTO articles(title, body) VALUES($1, $2) RETURNING id", a.Title, a.Body)
+	err := row.Scan(&a.ID)
+
+	if err != nil {
+		return errors.New("error adding article to DB")
+	}
+
+	return nil
 }
 
 var (
-	errBadRequest400 = &errResponse{HTTPStatusCode: http.StatusBadRequest, ErrorMessage: "Bad Request"}
-	articles         []article
+	errBadRequest400 = &errResponse{
+		HTTPStatusCode: http.StatusBadRequest,
+		ErrorMessage:   "Bad Request",
+	}
+	errServerError500 = &errResponse{
+		HTTPStatusCode: http.StatusInternalServerError,
+		ErrorMessage:   "Internal server error occured",
+	}
+	articles []article
 )

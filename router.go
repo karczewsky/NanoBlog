@@ -26,6 +26,7 @@ func getRouter() *chi.Mux {
 			r.Route("/{articleID}", func(r chi.Router) {
 				r.Use(articleCtxMiddleware)
 				r.Get("/", getSingleArticleHandler)
+				r.Post("/", makeArticle)
 			})
 		})
 	})
