@@ -56,7 +56,7 @@ func createArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := data.saveDB(); err != nil {
+	if err := data.insertIntoDB(); err != nil {
 		log.Fatal(err)
 		render.Render(w, r, errServerError500)
 		return
@@ -80,7 +80,7 @@ func (a *article) Bind(r *http.Request) error {
 	return nil
 }
 
-func (a *article) saveDB() error {
+func (a *article) insertIntoDB() error {
 	row := database.QueryRow("INSERT INTO articles(title, body) VALUES($1, $2) RETURNING id", a.Title, a.Body)
 	err := row.Scan(&a.ID)
 
