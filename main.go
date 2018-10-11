@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/joho/godotenv"
 )
 
-var webServerAddr = ":8000"
+var webServerAddr string
 
 func init() {
-	// Load ENVs
 	err := godotenv.Load(".env")
 	if err != nil {
 		panic("Error loading .env file")
@@ -21,7 +21,11 @@ func init() {
 	database = connectToDb()
 	initDB()
 
+	// WEBAPP
+	webServerAddr = os.Getenv("WEBSERVER_ADDR")
+
 	fmt.Printf("Starting NanoBlog\n")
+	fmt.Printf("Open browser at http://%v\n", webServerAddr)
 }
 
 func main() {
