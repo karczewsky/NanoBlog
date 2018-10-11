@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var webServerAddr = ":8000"
+
 func init() {
 	// Load ENVs
 	err := godotenv.Load(".env")
@@ -27,7 +29,7 @@ func main() {
 
 	router := getRouter()
 	s := &http.Server{
-		Addr:           ":8000",
+		Addr:           webServerAddr,
 		Handler:        router,
 		ReadTimeout:    5 * time.Second,
 		WriteTimeout:   10 * time.Second,

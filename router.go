@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/go-chi/render"
 
@@ -17,6 +19,8 @@ func getRouter() *chi.Mux {
 	r.Use(middleware.Recoverer)
 
 	// HANDLERS
+	wd, _ := os.Getwd()
+	fileServer(r, "/", http.Dir(filepath.Join(wd, "site")))
 	r.Get("/ping", pingHandler)
 
 	// REST
